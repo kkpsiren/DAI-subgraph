@@ -1,0 +1,26 @@
+specVersion: 0.0.2
+description: Token Subgraph API
+repository: https://github.com/kkpsiren/DAI-subgraph
+schema:
+  file: ./token.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Transfer
+    network: mainnet
+    source:
+      address: "0x6b175474e89094c44da98b954eedeac495271d0f"
+      abi: DAI
+      startBlock: 9300000
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mapping/transfer.ts
+      entities:
+        - Transfer
+      abis:
+        - name: DAI
+          file: ./abis/DAI.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
